@@ -13,69 +13,78 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            height: 100vh;
+        html, body {
+            width: 100%;
+            height: 100dvh;
             overflow: hidden;
-            background-color: #090a0f;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #070911;
             color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
-            perspective: 1000px;
         }
 
-        /* Imagen de fondo con movimiento dinámico */
-        .bg-image {
-            position: absolute;
-            top: -5%;
-            left: -5%;
-            width: 110%;
-            height: 110%;
+        /* Capa desenfocada trasera para rellenar bordes en pantallas anchas */
+        .bg-blur {
+            position: fixed;
+            inset: -20px;
             background-image: url('https://i.pinimg.com/736x/29/cf/21/29cf2165514b1e2c924bf3c88f57156e.jpg');
             background-size: cover;
             background-position: center;
-            filter: brightness(0.65) contrast(1.1);
-            z-index: 1;
-            transition: transform 0.15s ease-out;
-            animation: slowZoom 25s infinite alternate ease-in-out;
+            filter: blur(25px) brightness(0.35);
+            z-index: 0;
         }
 
-        @keyframes slowZoom {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.08); }
+        /* Imagen principal centrada y completa */
+        .bg-image {
+            position: fixed;
+            inset: 0;
+            background-image: url('https://i.pinimg.com/736x/29/cf/21/29cf2165514b1e2c924bf3c88f57156e.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            filter: brightness(0.72) contrast(1.08);
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .bg-image {
+                background-size: cover;
+                background-position: center center;
+            }
         }
 
         .overlay {
-            position: absolute;
+            position: fixed;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(10, 14, 26, 0.35) 0%, rgba(5, 7, 15, 0.85) 100%);
+            background: radial-gradient(circle at center, rgba(10, 14, 26, 0.25) 0%, rgba(5, 7, 15, 0.8) 100%);
             z-index: 2;
         }
 
         #particles {
-            position: absolute;
+            position: fixed;
             inset: 0;
             z-index: 3;
             pointer-events: none;
         }
 
-        /* Tarjeta interactiva 3D */
+        /* Tarjeta centrada */
         .card {
             position: relative;
             z-index: 10;
-            width: 90%;
-            max-width: 430px;
-            background: rgba(15, 20, 35, 0.65);
+            width: 92%;
+            max-width: 440px;
+            background: rgba(15, 20, 35, 0.68);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 215, 130, 0.25);
             border-radius: 24px;
-            padding: 38px 28px;
+            padding: 36px 24px;
             text-align: center;
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), inset 0 0 20px rgba(255, 215, 130, 0.05);
-            transition: transform 0.2s ease-out, box-shadow 0.3s ease;
+            margin: auto;
         }
 
         .progress-bar {
@@ -106,7 +115,7 @@
         }
 
         @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(25px) scale(0.96); }
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
@@ -130,7 +139,7 @@
             letter-spacing: 0.5px;
         }
 
-        h1 { font-size: 2.1rem; }
+        h1 { font-size: 2.05rem; }
         h2 { font-size: 1.65rem; }
 
         .gold-text {
@@ -147,7 +156,7 @@
             font-weight: 300;
         }
 
-        /* Caja de detalles tipo ticket (Intacta) */
+        /* Caja de detalles tipo ticket */
         .ticket-box {
             background: rgba(0, 0, 0, 0.35);
             border: 1px dashed rgba(246, 211, 101, 0.4);
@@ -190,41 +199,24 @@
             letter-spacing: 0.5px;
         }
 
-        /* Recuadro pequeño para la imagen final */
-        .meme-box {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(246, 211, 101, 0.35);
-            border-radius: 16px;
-            padding: 12px;
-            margin: 0 auto 18px auto;
-            max-width: 230px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        /* Contenedor de botones en Paso 4 */
+        .action-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            min-height: 60px;
+            position: relative;
         }
 
-        .meme-box img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .meme-caption {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #f6d365;
-            margin-bottom: 0;
-            line-height: 1.3;
-        }
-
-        /* Botón principal */
         .btn {
             background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
             color: #111827;
             border: none;
-            padding: 14px 34px;
+            padding: 14px 26px;
             border-radius: 50px;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -232,17 +224,66 @@
         }
 
         .btn:hover {
-            transform: translateY(-3px) scale(1.03);
+            transform: translateY(-2px) scale(1.03);
             box-shadow: 0 15px 30px rgba(246, 211, 101, 0.5);
         }
 
         .btn:active {
             transform: scale(0.98);
         }
+
+        .btn-no {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #e5e7eb;
+            padding: 13px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 20;
+        }
+
+        /* Recuadro pequeño al lado del botón de Sí */
+        .meme-side-box {
+            display: none;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(246, 211, 101, 0.45);
+            border-radius: 14px;
+            padding: 8px;
+            width: 145px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            animation: popIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .meme-side-box img {
+            width: 100%;
+            height: 95px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .meme-side-caption {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #f6d365;
+            margin-bottom: 0;
+            line-height: 1.25;
+        }
     </style>
 </head>
 <body>
 
+    <div class="bg-blur"></div>
     <div class="bg-image" id="bg"></div>
     <div class="overlay"></div>
     <canvas id="particles"></canvas>
@@ -268,7 +309,7 @@
             <button class="btn" onclick="goToStep(3, 75)">Ver el plan →</button>
         </div>
 
-        <!-- PARTE 3 (Pase VIP intacto) -->
+        <!-- PARTE 3 -->
         <div class="step" id="step3">
             <span class="tag">Pase VIP</span>
             <h2>Nuestra Cita</h2>
@@ -293,51 +334,41 @@
             <button class="btn" onclick="goToStep(4, 100)">Continuar</button>
         </div>
 
-        <!-- PARTE 4 (Solo botón de confirmar) -->
+        <!-- PARTE 4 -->
         <div class="step" id="step4">
             <span class="tag">Confirmación</span>
             <h2>¿Nos vemos hoy, <span class="gold-text">Camila</span>?</h2>
-            <p>Solo tienes que presionar el botón y yo me encargo del resto.</p>
-            <button class="btn" onclick="celebrate()">¡Sí, nos vemos allá! 🥂</button>
+            <p>Solo tienes que confirmar y yo me encargo del resto.</p>
+            
+            <div class="action-area">
+                <button class="btn" onclick="celebrate()">¡Sí, nos vemos allá! 🥂</button>
+                <button class="btn-no" id="noBtn" onmouseover="dodge()" ontouchstart="dodge()">Déjame pensar</button>
+                
+                <!-- Recuadro que aparece al lado cuando desaparece el No -->
+                <div class="meme-side-box" id="memeBox">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYg3UIItTWQb0vHErBCR6osKaYuc6e5CZMzRRTNHslyw&s=10" alt="Sin opción">
+                    <p class="meme-side-caption">no tienes opcion tampoco amor JAJAJAJAJA</p>
+                </div>
+            </div>
         </div>
 
-        <!-- PANTALLA FINAL (Con recuadro, imagen y frase) -->
+        <!-- PANTALLA FINAL -->
         <div class="step" id="step5">
             <span class="tag">Confirmado 🥂</span>
-            
-            <div class="meme-box">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYg3UIItTWQb0vHErBCR6osKaYuc6e5CZMzRRTNHslyw&s=10" alt="Confirmado">
-                <p class="meme-caption">no tienes opcion tampoco amor JAJAJAJAJA</p>
-            </div>
-
+            <h1>¡Es un hecho!</h1>
             <p style="margin-bottom: 0;">Nos vemos hoy a las <strong>5:00 PM en Plaza Venezuela</strong>. ¡Qué emoción!</p>
         </div>
     </div>
 
     <script>
-        // ==========================================
-        // CONFIGURA AQUÍ TU WHATSAPP O CORREO
-        // ==========================================
-        const miTelefono = "584120000000"; // <-- Pon tu número aquí (código país + número sin el 0)
-        // const miCorreo = "tucorreo@gmail.com"; // <-- Descomenta si prefieres usar correo
-        // ==========================================
+        // Tu número de WhatsApp configurado (0414-3568666 -> 584143568666)
+        const miTelefono = "584143568666";
 
         function goToStep(step, percent) {
             document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
             document.getElementById(`step${step}`).classList.add('active');
             document.getElementById('progress').style.width = percent + '%';
         }
-
-        // Efecto Parallax
-        const bg = document.getElementById('bg');
-        const card = document.getElementById('card');
-
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20;
-            bg.style.transform = `scale(1.06) translate(${-x}px, ${-y}px)`;
-            card.style.transform = `rotateY(${x * 0.4}deg) rotateX(${-y * 0.4}deg)`;
-        });
 
         // Contador regresivo hacia hoy 14 Nov 2026 a las 5:00 PM
         const targetDate = new Date('2026-11-14T17:00:00').getTime();
@@ -361,7 +392,27 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // Celebración y envío de notificación
+        // Juego del botón "No" -> Se mueve 3 veces, desaparece y muestra el recuadro al lado del "Sí"
+        let dodgeCount = 0;
+        const phrases = ["¿Segura? 😏", "¡Casi!", "¡Último intento!"];
+
+        function dodge() {
+            const btn = document.getElementById('noBtn');
+            const memeBox = document.getElementById('memeBox');
+
+            if (dodgeCount < 3) {
+                const x = (Math.random() - 0.5) * 150;
+                const y = (Math.random() - 0.5) * 100;
+                btn.style.transform = `translate(${x}px, ${y}px)`;
+                btn.innerText = phrases[dodgeCount];
+                dodgeCount++;
+            } else {
+                btn.style.display = 'none';
+                memeBox.style.display = 'block';
+            }
+        }
+
+        // Celebración y envío a WhatsApp
         function celebrate() {
             goToStep(5, 100);
             
@@ -372,26 +423,10 @@
                 colors: ['#f6d365', '#fda085', '#ffffff']
             });
 
-            // 1. Envío a WhatsApp tras 2.5 segundos para que vea la imagen primero
-            if (miTelefono && miTelefono !== "584143568666") {
-                const texto = encodeURIComponent("¡Acepto la cita! Nos vemos hoy a las 5:00 PM en Plaza Venezuela 🥂✨");
-                setTimeout(() => {
-                    window.open(`https://wa.me/${miTelefono}?text=${texto}`, '_blank');
-                }, 2500);
-            }
-
-            // 2. Si prefieres notificación silenciosa al correo (descomenta las líneas de abajo y pon tu correo arriba)
-            /*
-            fetch(`https://formsubmit.co/ajax/${miCorreo}`, {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify({
-                    Invitada: "Camila",
-                    Estado: "¡CONFIRMÓ LA CITA!",
-                    Lugar: "Plaza Venezuela - 5:00 PM"
-                })
-            });
-            */
+            const texto = encodeURIComponent("¡Acepto la cita! Nos vemos hoy a las 5:00 PM en Plaza Venezuela 🥂✨");
+            setTimeout(() => {
+                window.open(`https://wa.me/${miTelefono}?text=${texto}`, '_blank');
+            }, 1500);
         }
 
         // Partículas doradas
