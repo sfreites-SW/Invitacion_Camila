@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Una invitación especial ✨</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Para Camila ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -13,329 +14,411 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             height: 100vh;
             overflow: hidden;
-            background: linear-gradient(to bottom, #070b19 0%, #121c38 55%, #232946 100%);
-            color: #fff;
+            background-color: #090a0f;
+            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
+            perspective: 1000px;
         }
 
-        /* Estrellas de fondo */
-        .stars {
+        /* Imagen de fondo con movimiento dinámico */
+        .bg-image {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 65%;
-            pointer-events: none;
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
+            background-image: url('https://i.pinimg.com/736x/29/cf/21/29cf2165514b1e2c924bf3c88f57156e.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.65) contrast(1.1);
             z-index: 1;
+            transition: transform 0.15s ease-out;
+            animation: slowZoom 25s infinite alternate ease-in-out;
         }
 
-        .star {
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+
+        /* Capa oscura degradada para que el texto siempre se lea perfecto */
+        .overlay {
             position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle var(--duration) infinite ease-in-out;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        /* Horizonte de Rascacielos */
-        .skyline {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 45vh;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(10, 14, 26, 0.35) 0%, rgba(5, 7, 15, 0.85) 100%);
             z-index: 2;
+        }
+
+        /* Canvas de partículas flotantes */
+        #particles {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
             pointer-events: none;
         }
 
-        .building {
-            background: #090d16;
-            position: relative;
-            border-top: 2px solid #1f2942;
-            box-shadow: 0 0 20px rgba(0,0,0,0.8);
-            display: grid;
-            padding: 10px 6px;
-            gap: 6px;
-        }
-
-        .window {
-            background: #161d31;
-            border-radius: 1px;
-            transition: background 1s ease;
-        }
-
-        .window.lit {
-            background: #ffd166;
-            box-shadow: 0 0 8px #ffd166;
-        }
-
-        /* Tarjeta Principal (Efecto Cristal) */
-        .card-container {
+        /* Tarjeta interactiva 3D */
+        .card {
             position: relative;
             z-index: 10;
             width: 90%;
-            max-width: 450px;
-            background: rgba(18, 25, 48, 0.65);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            padding: 40px 30px;
+            max-width: 430px;
+            background: rgba(15, 20, 35, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 215, 130, 0.25);
+            border-radius: 24px;
+            padding: 38px 28px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            transition: all 0.5s ease;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), inset 0 0 20px rgba(255, 215, 130, 0.05);
+            transition: transform 0.2s ease-out, box-shadow 0.3s ease;
         }
 
+        /* Barra de progreso superior */
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 24px;
+            right: 24px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0 0 4px 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 25%;
+            background: linear-gradient(90deg, #f6d365 0%, #fda085 100%);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Transiciones entre pasos */
         .step {
             display: none;
-            animation: fadeIn 0.8s ease forwards;
         }
 
         .step.active {
             display: block;
+            animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(25px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #f6d365;
+            background: rgba(246, 211, 101, 0.12);
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(246, 211, 101, 0.3);
         }
 
         h1, h2 {
-            font-family: 'Playfair Display', serif;
-            color: #ffd166;
-            margin-bottom: 15px;
-            font-weight: 600;
+            font-family: 'Cinzel', serif;
+            color: #fff;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
         }
 
-        h1 { font-size: 2rem; }
-        h2 { font-size: 1.6rem; }
+        h1 { font-size: 2.1rem; }
+        h2 { font-size: 1.65rem; }
+
+        .gold-text {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
         p {
             font-size: 0.95rem;
-            line-height: 1.6;
-            color: #e2e8f0;
-            margin-bottom: 25px;
+            line-height: 1.65;
+            color: #d1d5db;
+            margin-bottom: 24px;
             font-weight: 300;
         }
 
-        .highlight {
-            color: #ffd166;
+        /* Caja de detalles tipo ticket */
+        .ticket-box {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px dashed rgba(246, 211, 101, 0.4);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .ticket-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.9rem;
+        }
+
+        .ticket-row:last-child {
+            border-bottom: none;
+        }
+
+        .ticket-label {
+            color: #9ca3af;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ticket-val {
+            color: #f6d365;
             font-weight: 600;
         }
 
-        /* Botones */
-        .btn {
-            background: linear-gradient(135deg, #ffd166 0%, #f4a261 100%);
-            color: #0b1021;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 30px;
-            font-size: 0.95rem;
+        /* Contador regresivo */
+        .countdown {
+            font-size: 0.85rem;
+            color: #fda085;
+            margin-bottom: 22px;
             font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Botones dinámicos */
+        .btn {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: #111827;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(246, 211, 101, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 209, 102, 0.4);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(246, 211, 101, 0.5);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
         }
 
         .btn-group {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-            position: relative;
+            align-items: center;
+            gap: 14px;
+            min-height: 55px;
         }
 
         .btn-no {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: #cbd5e1;
-            padding: 12px 22px;
-            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #e5e7eb;
+            padding: 13px 22px;
+            border-radius: 50px;
+            font-size: 0.85rem;
             cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.2s ease;
-        }
-
-        /* Indicador de progreso */
-        .dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 25px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: background 0.3s;
-        }
-
-        .dot.active {
-            background: #ffd166;
-            width: 20px;
-            border-radius: 4px;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
     </style>
 </head>
 <body>
 
-    <!-- Fondo de estrellas y ciudad -->
-    <div class="stars" id="stars"></div>
-    <div class="skyline" id="skyline"></div>
+    <div class="bg-image" id="bg"></div>
+    <div class="overlay"></div>
+    <canvas id="particles"></canvas>
 
-    <!-- Contenedor de la carta -->
-    <div class="card-container">
-        
-        <!-- PARTE 1: Bienvenida -->
+    <div class="card" id="card">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+
+        <!-- PARTE 1 -->
         <div class="step active" id="step1">
-            <h1>Hola, [Su Nombre] ✨</h1>
-            <p>Quería hacer algo distinto a un simple mensaje de texto para decirte algo...</p>
-            <button class="btn" onclick="nextStep(2)">Abrir carta</button>
+            <span class="tag">Invitación Privada</span>
+            <h1>Hola, <span class="gold-text">Camila</span></h1>
+            <p>Quería salir de lo común y prepararte algo especial antes de que empiece la tarde...</p>
+            <button class="btn" onclick="goToStep(2, 50)">Descubrir ✨</button>
         </div>
 
-        <!-- PARTE 2: El motivo -->
+        <!-- PARTE 2 -->
         <div class="step" id="step2">
-            <h2>Desde las alturas</h2>
-            <p>Dicen que las mejores vistas de la ciudad se disfrutan más cuando tienes con quién compartirlas. Y la verdad, desde que empezamos a hablar, cada rato contigo se siente así de especial.</p>
-            <button class="btn" onclick="nextStep(3)">Seguir leyendo</button>
+            <span class="tag">El Motivo</span>
+            <h2>Una buena vista</h2>
+            <p>Las mejores tardes en la ciudad son las que se comparten con alguien que hace que el tiempo pase volando. Y contigo, cada momento vale la pena.</p>
+            <button class="btn" onclick="goToStep(3, 75)">Ver el plan →</button>
         </div>
 
-        <!-- PARTE 3: El plan -->
+        <!-- PARTE 3 -->
         <div class="step" id="step3">
-            <h2>Tengo un plan</h2>
-            <p>Me encantaría invitarte a salir este <span class="highlight">[Día, ej. viernes]</span> a las <span class="highlight">[Hora, ej. 7:30 PM]</span>.<br><br>
-            ¿El plan? <span class="highlight">[Ej. Ir por unos tragos / cenar con buena vista / tomar un café]</span> y pasar un rato increíble juntos.</p>
-            <button class="btn" onclick="nextStep(4)">¿Qué dices?</button>
+            <span class="tag">Pase VIP</span>
+            <h2>Nuestra Cita</h2>
+            
+            <div class="ticket-box">
+                <div class="ticket-row">
+                    <span class="ticket-label">Fecha</span>
+                    <span class="ticket-val">14 de Noviembre, 2026</span>
+                </div>
+                <div class="ticket-row">
+                    <span class="ticket-label">Hora</span>
+                    <span class="ticket-val">5:00 PM</span>
+                </div>
+                <div class="ticket-row">
+                    <span class="ticket-label">Punto de encuentro</span>
+                    <span class="ticket-val">Plaza Venezuela</span>
+                </div>
+            </div>
+
+            <div class="countdown" id="countdown">Calculando tiempo restante...</div>
+
+            <button class="btn" onclick="goToStep(4, 100)">Continuar</button>
         </div>
 
-        <!-- PARTE 4: La pregunta final -->
+        <!-- PARTE 4 -->
         <div class="step" id="step4">
-            <h2>¿Aceptas la cita? 🥂</h2>
-            <p>Prometo buena compañía, cero aburrimiento y una gran noche.</p>
+            <span class="tag">Confirmación</span>
+            <h2>¿Nos vemos hoy, <span class="gold-text">Camila</span>?</h2>
+            <p>Solo tienes que decir que sí y yo me encargo del resto.</p>
             <div class="btn-group">
-                <button class="btn" onclick="acceptDate()">¡Sí, vamos!</button>
-                <button class="btn-no" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">Déjame pensarlo</button>
+                <button class="btn" onclick="celebrate()">¡Sí, nos vemos allá!</button>
+                <button class="btn-no" id="noBtn" onmouseover="dodge()" ontouchstart="dodge()">Déjame pensar</button>
             </div>
         </div>
 
-        <!-- PANTALLA FINAL (Al decir que sí) -->
+        <!-- PANTALLA FINAL -->
         <div class="step" id="step5">
-            <h1>¡Es una cita! 🎉</h1>
-            <p>Me acabas de alegrar el día. Te escribo en un momento para coordinar los detalles. ¡Nos vemos pronto!</p>
-        </div>
-
-        <!-- Puntos de progreso -->
-        <div class="dots" id="dots">
-            <div class="dot active"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+            <span class="tag">Confirmado 🥂</span>
+            <h1>¡Es un hecho!</h1>
+            <p>Nos vemos hoy a las <strong>5:00 PM en Plaza Venezuela</strong>. Avísame cuando estés saliendo. ¡Qué emoción!</p>
         </div>
     </div>
 
     <script>
-        // 1. Generar estrellas aleatorias
-        const starsContainer = document.getElementById('stars');
-        for (let i = 0; i < 60; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            const size = Math.random() * 2.5 + 1;
-            star.style.width = `${size}px`;
-            star.style.height = `${size}px`;
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
-            starsContainer.appendChild(star);
+        // 1. Navegación entre pasos
+        function goToStep(step, percent) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+            document.getElementById('progress').style.width = percent + '%';
         }
 
-        // 2. Generar rascacielos y ventanas iluminadas
-        const skyline = document.getElementById('skyline');
-        const buildingConfigs = [
-            { w: 65, h: 180, cols: 3, rows: 10 },
-            { w: 85, h: 260, cols: 4, rows: 14 },
-            { w: 60, h: 150, cols: 3, rows: 8 },
-            { w: 100, h: 320, cols: 5, rows: 18 }, // Rascacielos alto
-            { w: 75, h: 210, cols: 3, rows: 12 },
-            { w: 90, h: 280, cols: 4, rows: 15 },
-            { w: 65, h: 170, cols: 3, rows: 9 }
-        ];
+        // 2. Efecto Parallax en fondo y tarjeta
+        const bg = document.getElementById('bg');
+        const card = document.getElementById('card');
 
-        const allWindows = [];
-
-        buildingConfigs.forEach(cfg => {
-            const b = document.createElement('div');
-            b.className = 'building';
-            b.style.width = `${cfg.w}px`;
-            b.style.height = `${cfg.h}px`;
-            b.style.gridTemplateColumns = `repeat(${cfg.cols}, 1fr)`;
-            
-            const totalWindows = cfg.cols * cfg.rows;
-            for (let i = 0; i < totalWindows; i++) {
-                const win = document.createElement('div');
-                win.className = 'window';
-                if (Math.random() > 0.65) win.classList.add('lit');
-                b.appendChild(win);
-                allWindows.push(win);
-            }
-            skyline.appendChild(b);
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            bg.style.transform = `scale(1.06) translate(${-x}px, ${-y}px)`;
+            card.style.transform = `rotateY(${x * 0.4}deg) rotateX(${-y * 0.4}deg)`;
         });
 
-        // Animar luces de los edificios suavemente
-        setInterval(() => {
-            const randomWin = allWindows[Math.floor(Math.random() * allWindows.length)];
-            randomWin.classList.toggle('lit');
-        }, 800);
+        // 3. Contador regresivo hacia hoy 14 Nov 2026 a las 5:00 PM
+        const targetDate = new Date('2026-11-14T17:00:00').getTime();
+        const countdownEl = document.getElementById('countdown');
 
-        // 3. Navegación entre partes de la carta
-        function nextStep(stepNumber) {
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById(`step${stepNumber}`).classList.add('active');
-            
-            const dots = document.querySelectorAll('.dot');
-            dots.forEach((dot, idx) => {
-                dot.classList.toggle('active', idx === stepNumber - 1);
-            });
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                countdownEl.innerText = "¡Ya casi es la hora de vernos! ✨";
+                return;
+            }
+
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            countdownEl.innerText = `Faltan ${hours}h ${minutes}m ${seconds}s para vernos`;
         }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
 
-        // 4. Botón esquivo divertido
-        function moveButton() {
+        // 4. Botón esquivo dinámico
+        const phrases = ["¿Segura? 😏", "¡Intenta de nuevo!", "Error 404", "Ese botón no sirve", "¡Dale al otro!"];
+        let phraseIdx = 0;
+
+        function dodge() {
             const btn = document.getElementById('noBtn');
-            const x = (Math.random() - 0.5) * 160;
-            const y = (Math.random() - 0.5) * 100;
+            const x = (Math.random() - 0.5) * 180;
+            const y = (Math.random() - 0.5) * 120;
             btn.style.transform = `translate(${x}px, ${y}px)`;
+            btn.innerText = phrases[phraseIdx % phrases.length];
+            phraseIdx++;
         }
 
-        // 5. Aceptación y celebración
-        function acceptDate() {
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById('step5').classList.add('active');
-            document.getElementById('dots').style.display = 'none';
-            
-            // Iluminar casi todas las ventanas de la ciudad para celebrar
-            allWindows.forEach(win => {
-                if (Math.random() > 0.2) win.classList.add('lit');
+        // 5. Celebración con confeti dorado
+        function celebrate() {
+            goToStep(5, 100);
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#f6d365', '#fda085', '#ffffff']
             });
         }
+
+        // 6. Partículas doradas flotando en el fondo
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = Array.from({ length: 45 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 2 + 0.5,
+            dx: (Math.random() - 0.5) * 0.4,
+            dy: -Math.random() * 0.6 - 0.2,
+            alpha: Math.random() * 0.6 + 0.2
+        }));
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.dx;
+                p.y += p.dy;
+                if (p.y < 0) p.y = canvas.height;
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(246, 211, 101, ${p.alpha})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
