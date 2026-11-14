@@ -47,7 +47,6 @@
             100% { transform: scale(1.08); }
         }
 
-        /* Capa oscura degradada para que el texto siempre se lea perfecto */
         .overlay {
             position: absolute;
             inset: 0;
@@ -55,7 +54,6 @@
             z-index: 2;
         }
 
-        /* Canvas de partículas flotantes */
         #particles {
             position: absolute;
             inset: 0;
@@ -69,7 +67,7 @@
             z-index: 10;
             width: 90%;
             max-width: 430px;
-            background: rgba(15, 20, 35, 0.6);
+            background: rgba(15, 20, 35, 0.65);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 215, 130, 0.25);
@@ -80,7 +78,6 @@
             transition: transform 0.2s ease-out, box-shadow 0.3s ease;
         }
 
-        /* Barra de progreso superior */
         .progress-bar {
             position: absolute;
             top: 0;
@@ -99,7 +96,6 @@
             transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Transiciones entre pasos */
         .step {
             display: none;
         }
@@ -110,14 +106,8 @@
         }
 
         @keyframes slideUpFade {
-            from {
-                opacity: 0;
-                transform: translateY(25px) scale(0.96);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(25px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .tag {
@@ -157,7 +147,7 @@
             font-weight: 300;
         }
 
-        /* Caja de detalles tipo ticket */
+        /* Caja de detalles tipo ticket (Intacta) */
         .ticket-box {
             background: rgba(0, 0, 0, 0.35);
             border: 1px dashed rgba(246, 211, 101, 0.4);
@@ -192,7 +182,6 @@
             font-weight: 600;
         }
 
-        /* Contador regresivo */
         .countdown {
             font-size: 0.85rem;
             color: #fda085;
@@ -201,20 +190,45 @@
             letter-spacing: 0.5px;
         }
 
-        /* Botones dinámicos */
+        /* Recuadro pequeño para la imagen final */
+        .meme-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(246, 211, 101, 0.35);
+            border-radius: 16px;
+            padding: 12px;
+            margin: 0 auto 18px auto;
+            max-width: 230px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .meme-box img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .meme-caption {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #f6d365;
+            margin-bottom: 0;
+            line-height: 1.3;
+        }
+
+        /* Botón principal */
         .btn {
             background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
             color: #111827;
             border: none;
-            padding: 14px 32px;
+            padding: 14px 34px;
             border-radius: 50px;
             font-size: 0.95rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 10px 25px rgba(246, 211, 101, 0.3);
-            position: relative;
-            overflow: hidden;
         }
 
         .btn:hover {
@@ -224,25 +238,6 @@
 
         .btn:active {
             transform: scale(0.98);
-        }
-
-        .btn-group {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 14px;
-            min-height: 55px;
-        }
-
-        .btn-no {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: #e5e7eb;
-            padding: 13px 22px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
     </style>
 </head>
@@ -261,7 +256,7 @@
         <div class="step active" id="step1">
             <span class="tag">Invitación Privada</span>
             <h1>Hola, <span class="gold-text">Camila</span></h1>
-            <p>Quería salir de lo común y prepararte algo especial antes de que empiece la tarde...</p>
+            <p>Quiero que este sea un bonito inicio y algo especial al finalizar la tarde</p>
             <button class="btn" onclick="goToStep(2, 50)">Descubrir ✨</button>
         </div>
 
@@ -273,7 +268,7 @@
             <button class="btn" onclick="goToStep(3, 75)">Ver el plan →</button>
         </div>
 
-        <!-- PARTE 3 -->
+        <!-- PARTE 3 (Pase VIP intacto) -->
         <div class="step" id="step3">
             <span class="tag">Pase VIP</span>
             <h2>Nuestra Cita</h2>
@@ -298,34 +293,42 @@
             <button class="btn" onclick="goToStep(4, 100)">Continuar</button>
         </div>
 
-        <!-- PARTE 4 -->
+        <!-- PARTE 4 (Solo botón de confirmar) -->
         <div class="step" id="step4">
             <span class="tag">Confirmación</span>
             <h2>¿Nos vemos hoy, <span class="gold-text">Camila</span>?</h2>
-            <p>Solo tienes que decir que sí y yo me encargo del resto.</p>
-            <div class="btn-group">
-                <button class="btn" onclick="celebrate()">¡Sí, nos vemos allá!</button>
-                <button class="btn-no" id="noBtn" onmouseover="dodge()" ontouchstart="dodge()">Déjame pensar</button>
-            </div>
+            <p>Solo tienes que presionar el botón y yo me encargo del resto.</p>
+            <button class="btn" onclick="celebrate()">¡Sí, nos vemos allá! 🥂</button>
         </div>
 
-        <!-- PANTALLA FINAL -->
+        <!-- PANTALLA FINAL (Con recuadro, imagen y frase) -->
         <div class="step" id="step5">
             <span class="tag">Confirmado 🥂</span>
-            <h1>¡Es un hecho!</h1>
-            <p>Nos vemos hoy a las <strong>5:00 PM en Plaza Venezuela</strong>. Avísame cuando estés saliendo. ¡Qué emoción!</p>
+            
+            <div class="meme-box">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYg3UIItTWQb0vHErBCR6osKaYuc6e5CZMzRRTNHslyw&s=10" alt="Confirmado">
+                <p class="meme-caption">no tienes opcion tampoco amor JAJAJAJAJA</p>
+            </div>
+
+            <p style="margin-bottom: 0;">Nos vemos hoy a las <strong>5:00 PM en Plaza Venezuela</strong>. ¡Qué emoción!</p>
         </div>
     </div>
 
     <script>
-        // 1. Navegación entre pasos
+        // ==========================================
+        // CONFIGURA AQUÍ TU WHATSAPP O CORREO
+        // ==========================================
+        const miTelefono = "584120000000"; // <-- Pon tu número aquí (código país + número sin el 0)
+        // const miCorreo = "tucorreo@gmail.com"; // <-- Descomenta si prefieres usar correo
+        // ==========================================
+
         function goToStep(step, percent) {
             document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
             document.getElementById(`step${step}`).classList.add('active');
             document.getElementById('progress').style.width = percent + '%';
         }
 
-        // 2. Efecto Parallax en fondo y tarjeta
+        // Efecto Parallax
         const bg = document.getElementById('bg');
         const card = document.getElementById('card');
 
@@ -336,7 +339,7 @@
             card.style.transform = `rotateY(${x * 0.4}deg) rotateX(${-y * 0.4}deg)`;
         });
 
-        // 3. Contador regresivo hacia hoy 14 Nov 2026 a las 5:00 PM
+        // Contador regresivo hacia hoy 14 Nov 2026 a las 5:00 PM
         const targetDate = new Date('2026-11-14T17:00:00').getTime();
         const countdownEl = document.getElementById('countdown');
 
@@ -358,31 +361,40 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // 4. Botón esquivo dinámico
-        const phrases = ["¿Segura? 😏", "¡Intenta de nuevo!", "Error 404", "Ese botón no sirve", "¡Dale al otro!"];
-        let phraseIdx = 0;
-
-        function dodge() {
-            const btn = document.getElementById('noBtn');
-            const x = (Math.random() - 0.5) * 180;
-            const y = (Math.random() - 0.5) * 120;
-            btn.style.transform = `translate(${x}px, ${y}px)`;
-            btn.innerText = phrases[phraseIdx % phrases.length];
-            phraseIdx++;
-        }
-
-        // 5. Celebración con confeti dorado
+        // Celebración y envío de notificación
         function celebrate() {
             goToStep(5, 100);
+            
             confetti({
-                particleCount: 100,
-                spread: 70,
+                particleCount: 120,
+                spread: 80,
                 origin: { y: 0.6 },
                 colors: ['#f6d365', '#fda085', '#ffffff']
             });
+
+            // 1. Envío a WhatsApp tras 2.5 segundos para que vea la imagen primero
+            if (miTelefono && miTelefono !== "584143568666") {
+                const texto = encodeURIComponent("¡Acepto la cita! Nos vemos hoy a las 5:00 PM en Plaza Venezuela 🥂✨");
+                setTimeout(() => {
+                    window.open(`https://wa.me/${miTelefono}?text=${texto}`, '_blank');
+                }, 2500);
+            }
+
+            // 2. Si prefieres notificación silenciosa al correo (descomenta las líneas de abajo y pon tu correo arriba)
+            /*
+            fetch(`https://formsubmit.co/ajax/${miCorreo}`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    Invitada: "Camila",
+                    Estado: "¡CONFIRMÓ LA CITA!",
+                    Lugar: "Plaza Venezuela - 5:00 PM"
+                })
+            });
+            */
         }
 
-        // 6. Partículas doradas flotando en el fondo
+        // Partículas doradas
         const canvas = document.getElementById('particles');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
