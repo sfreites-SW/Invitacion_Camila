@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Una invitación especial ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #070b19 0%, #121c38 55%, #232946 100%);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Estrellas de fondo */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 65%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Horizonte de Rascacielos */
+        .skyline {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 45vh;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .building {
+            background: #090d16;
+            position: relative;
+            border-top: 2px solid #1f2942;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            display: grid;
+            padding: 10px 6px;
+            gap: 6px;
+        }
+
+        .window {
+            background: #161d31;
+            border-radius: 1px;
+            transition: background 1s ease;
+        }
+
+        .window.lit {
+            background: #ffd166;
+            box-shadow: 0 0 8px #ffd166;
+        }
+
+        /* Tarjeta Principal (Efecto Cristal) */
+        .card-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 450px;
+            background: rgba(18, 25, 48, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+            color: #ffd166;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        h1 { font-size: 2rem; }
+        h2 { font-size: 1.6rem; }
+
+        p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            margin-bottom: 25px;
+            font-weight: 300;
+        }
+
+        .highlight {
+            color: #ffd166;
+            font-weight: 600;
+        }
+
+        /* Botones */
+        .btn {
+            background: linear-gradient(135deg, #ffd166 0%, #f4a261 100%);
+            color: #0b1021;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 209, 102, 0.4);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .btn-no {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #cbd5e1;
+            padding: 12px 22px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        /* Indicador de progreso */
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 25px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: background 0.3s;
+        }
+
+        .dot.active {
+            background: #ffd166;
+            width: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fondo de estrellas y ciudad -->
+    <div class="stars" id="stars"></div>
+    <div class="skyline" id="skyline"></div>
+
+    <!-- Contenedor de la carta -->
+    <div class="card-container">
+        
+        <!-- PARTE 1: Bienvenida -->
+        <div class="step active" id="step1">
+            <h1>Hola, [Su Nombre] ✨</h1>
+            <p>Quería hacer algo distinto a un simple mensaje de texto para decirte algo...</p>
+            <button class="btn" onclick="nextStep(2)">Abrir carta</button>
+        </div>
+
+        <!-- PARTE 2: El motivo -->
+        <div class="step" id="step2">
+            <h2>Desde las alturas</h2>
+            <p>Dicen que las mejores vistas de la ciudad se disfrutan más cuando tienes con quién compartirlas. Y la verdad, desde que empezamos a hablar, cada rato contigo se siente así de especial.</p>
+            <button class="btn" onclick="nextStep(3)">Seguir leyendo</button>
+        </div>
+
+        <!-- PARTE 3: El plan -->
+        <div class="step" id="step3">
+            <h2>Tengo un plan</h2>
+            <p>Me encantaría invitarte a salir este <span class="highlight">[Día, ej. viernes]</span> a las <span class="highlight">[Hora, ej. 7:30 PM]</span>.<br><br>
+            ¿El plan? <span class="highlight">[Ej. Ir por unos tragos / cenar con buena vista / tomar un café]</span> y pasar un rato increíble juntos.</p>
+            <button class="btn" onclick="nextStep(4)">¿Qué dices?</button>
+        </div>
+
+        <!-- PARTE 4: La pregunta final -->
+        <div class="step" id="step4">
+            <h2>¿Aceptas la cita? 🥂</h2>
+            <p>Prometo buena compañía, cero aburrimiento y una gran noche.</p>
+            <div class="btn-group">
+                <button class="btn" onclick="acceptDate()">¡Sí, vamos!</button>
+                <button class="btn-no" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">Déjame pensarlo</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA FINAL (Al decir que sí) -->
+        <div class="step" id="step5">
+            <h1>¡Es una cita! 🎉</h1>
+            <p>Me acabas de alegrar el día. Te escribo en un momento para coordinar los detalles. ¡Nos vemos pronto!</p>
+        </div>
+
+        <!-- Puntos de progreso -->
+        <div class="dots" id="dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Generar estrellas aleatorias
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 60; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 2.5 + 1;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+            starsContainer.appendChild(star);
+        }
+
+        // 2. Generar rascacielos y ventanas iluminadas
+        const skyline = document.getElementById('skyline');
+        const buildingConfigs = [
+            { w: 65, h: 180, cols: 3, rows: 10 },
+            { w: 85, h: 260, cols: 4, rows: 14 },
+            { w: 60, h: 150, cols: 3, rows: 8 },
+            { w: 100, h: 320, cols: 5, rows: 18 }, // Rascacielos alto
+            { w: 75, h: 210, cols: 3, rows: 12 },
+            { w: 90, h: 280, cols: 4, rows: 15 },
+            { w: 65, h: 170, cols: 3, rows: 9 }
+        ];
+
+        const allWindows = [];
+
+        buildingConfigs.forEach(cfg => {
+            const b = document.createElement('div');
+            b.className = 'building';
+            b.style.width = `${cfg.w}px`;
+            b.style.height = `${cfg.h}px`;
+            b.style.gridTemplateColumns = `repeat(${cfg.cols}, 1fr)`;
+            
+            const totalWindows = cfg.cols * cfg.rows;
+            for (let i = 0; i < totalWindows; i++) {
+                const win = document.createElement('div');
+                win.className = 'window';
+                if (Math.random() > 0.65) win.classList.add('lit');
+                b.appendChild(win);
+                allWindows.push(win);
+            }
+            skyline.appendChild(b);
+        });
+
+        // Animar luces de los edificios suavemente
+        setInterval(() => {
+            const randomWin = allWindows[Math.floor(Math.random() * allWindows.length)];
+            randomWin.classList.toggle('lit');
+        }, 800);
+
+        // 3. Navegación entre partes de la carta
+        function nextStep(stepNumber) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${stepNumber}`).classList.add('active');
+            
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === stepNumber - 1);
+            });
+        }
+
+        // 4. Botón esquivo divertido
+        function moveButton() {
+            const btn = document.getElementById('noBtn');
+            const x = (Math.random() - 0.5) * 160;
+            const y = (Math.random() - 0.5) * 100;
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        // 5. Aceptación y celebración
+        function acceptDate() {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step5').classList.add('active');
+            document.getElementById('dots').style.display = 'none';
+            
+            // Iluminar casi todas las ventanas de la ciudad para celebrar
+            allWindows.forEach(win => {
+                if (Math.random() > 0.2) win.classList.add('lit');
+            });
+        }
+    </script>
+</body>
+</html>
